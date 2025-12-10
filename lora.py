@@ -15,7 +15,6 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 import librosa
 import numpy as np
 from tqdm import tqdm
-from huggingface_hub import hf_hub_download
 
 # Import Chatterbox components
 from chatterbox.tts import ChatterboxTTS, punc_norm
@@ -29,8 +28,6 @@ from chatterbox.models.t3.modules.cond_enc import T3Cond
 import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-import matplotlib.patches as mpatches
 from datetime import datetime
 import threading
 import time
@@ -40,6 +37,8 @@ from collections import deque
 DATASET_DIR = "./dataset"
 WAVS_DIR = "./dataset/wavs"
 METADATA_FILE = "./dataset/metadata.csv"
+MODEL_DIR = "./model/chatterbox-tts/"
+TOKENIZER_PATH = "./model/chatterbox-tts/tokenizer.json"
 BATCH_SIZE = 1
 EPOCHS = 10
 LEARNING_RATE = 2e-5  
@@ -734,7 +733,7 @@ def main():
     print(f"Train samples: {len(train_samples)}, Validation samples: {len(val_samples)}")
     # Load Chatterbox model
     print("Loading Chatterbox TTS model...")
-    model = ChatterboxTTS.from_pretrained(DEVICE)
+    model = ChatterboxTTS.from_local(ckpt_dir=MODEL_DIR, device=DEVICE)
     # Restart training
     #model = ChatterboxTTS.from_local("./checkpoints_lora/merged_model", DEVICE)
 
@@ -941,7 +940,7 @@ def main():
     
     # Copy tokenizer
     import shutil
-    tokenizer_path = Path(hf_hub_download(repo_id="ResembleAI/chatterbox", filename="tokenizer.json"))
+    tokenizer_path = Path(TOKENIZER_PATH)
     shutil.copy(tokenizer_path, merged_dir / "tokenizer.json")
     
     # Save conditionals if they exist

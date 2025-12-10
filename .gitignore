@@ -48,3 +48,6 @@ checkpoints/
 **/*.wav
 /dataset
 .venv
+/model
+/checkpoints_lora
+training_metrics.png
