@@ -3,16 +3,17 @@ import torch.nn as nn
 import numpy as np
 from pathlib import Path
 from typing import Dict, List
-from dataclasses import dataclass
 
 # Import Chatterbox components
 from chatterbox.tts import ChatterboxTTS
-from huggingface_hub import hf_hub_download
 import shutil
 
 # Hardcoded configuration - MODIFY THESE
-CHECKPOINT_PATH = "./checkpoints_lora/checkpoint_epoch7_step1248.pt"  # Path to your checkpoint
+CHECKPOINT_PATH = "./checkpoints_lora/checkpoint_epoch9_step10.pt"  # Path to your checkpoint
 OUTPUT_DIR = "./checkpoints_lora/merged_model"  # Where to save the merged model
+TOKENIZER_PATH = "./model/chatterbox-tts/tokenizer.json"
+MODEL_DIR = "./model/chatterbox-tts/"
+
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # LoRA configuration (must match training config)
@@ -115,7 +116,7 @@ def save_merged_model(model: ChatterboxTTS, output_dir: Path):
     
     # Copy tokenizer
     print("Copying tokenizer...")
-    tokenizer_path = Path(hf_hub_download(repo_id="ResembleAI/chatterbox", filename="tokenizer.json"))
+    tokenizer_path = Path(TOKENIZER_PATH)
     shutil.copy(tokenizer_path, output_dir / "tokenizer.json")
     
     # Save conditionals if they exist
@@ -148,7 +149,7 @@ def main():
     
     # Load base model
     print("\nLoading base Chatterbox model...")
-    model = ChatterboxTTS.from_pretrained(DEVICE)
+    model = ChatterboxTTS.from_local(ckpt_dir=MODEL_DIR, device=DEVICE)
     
     # Inject LoRA layers
     print("\nInjecting LoRA layers...")

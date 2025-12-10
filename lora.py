@@ -909,7 +909,7 @@ def main():
     print("Creating merged model...")
     
     # Clone the model state for merging
-    merged_model = ChatterboxTTS.from_pretrained(DEVICE)
+    merged_model = ChatterboxTTS.from_local(ckpt_dir=MODEL_DIR,device=DEVICE)
     
     # Re-inject LoRA layers and load final weights
     merged_lora_layers = inject_lora_layers(
