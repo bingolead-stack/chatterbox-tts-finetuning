@@ -724,7 +724,7 @@ def main():
     if len(samples) == 0:
         raise ValueError(f"No valid audio samples found in {WAVS_DIR}")
     
-    return
+    # return
     # Split into train/val
     random.shuffle(samples)
     val_size = int(len(samples) * VALIDATION_SPLIT)
