@@ -1,6 +1,5 @@
 import torchaudio as ta
 from chatterbox.tts import ChatterboxTTS
-from chatterbox.mtl_tts import ChatterboxMultilingualTTS
 import torch
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
