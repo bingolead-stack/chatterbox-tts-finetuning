@@ -7,7 +7,7 @@ Chatterbox is an open source TTS model. Licensed under MIT, Chatterbox has been 
 ```bash
 python3.10 -m venv .venv
 source .venv/bin/activate
-pip install chatterbox-streaming
+pip install .
 ```
 
 ## Training (lora.py)
